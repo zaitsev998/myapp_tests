@@ -37,7 +37,7 @@ class MysqlOrmConnection(object):
 
 
 if __name__ == '__main__':
-    connection = MysqlOrmConnection('root', 'pass', 'MYSQL_DB', host='127.0.0.1', port=3333)
+    connection = MysqlOrmConnection('root', 'pass', 'MYSQL_DB', host='0.0.0.0', port=3306)
     engine = connection.connection.engine
     if not engine.dialect.has_table(engine, 'test_users'):
         Base.metadata.tables['test_users'].create(engine)
