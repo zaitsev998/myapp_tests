@@ -20,11 +20,11 @@ class MysqlConnection(object):
 
     def connect(self):
         connection = self.get_connection()
-        print(1)
+
         connection.query(f'DROP DATABASE IF EXISTS {self.db_name}')
         connection.query(f'CREATE DATABASE {self.db_name}')
         connection.close()
-        print(2)
+
         return self.get_connection(db_created=True)
 
     def execute_query(self, query):
@@ -49,6 +49,5 @@ if __name__ == '__main__':
         UNIQUE KEY `ix_test_users_username` (`username`)
     )
     """
-    print(3)
     connection.execute_query(query)
 
