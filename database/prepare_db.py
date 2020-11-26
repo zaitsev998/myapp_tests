@@ -1,5 +1,8 @@
+import time
+
 import pymysql
 from pymysql.cursors import DictCursor
+from pymysql.err import OperationalError
 
 
 class MysqlConnection(object):
@@ -34,7 +37,13 @@ class MysqlConnection(object):
 
 
 if __name__ == '__main__':
-    connection = MysqlConnection('root', 'pass', 'MYSQL_DB', host='0.0.0.0', port=3306)
+    while True:
+        try:
+            connection = MysqlConnection('root', 'pass', 'MYSQL_DB', host='127.0.0.1', port=3306)
+        except OperationalError:
+            time.sleep(3)
+            continue
+        break
     query = """
         CREATE TABLE `test_users` (
         `id` int NOT NULL AUTO_INCREMENT,
