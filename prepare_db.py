@@ -1,5 +1,5 @@
 import time
-
+import settings
 import pymysql
 from pymysql.cursors import DictCursor
 from pymysql.err import OperationalError
@@ -39,7 +39,7 @@ class MysqlConnection(object):
 if __name__ == '__main__':
     while True:
         try:
-            connection = MysqlConnection('root', 'pass', 'MYSQL_DB', host='127.0.0.1', port=3306)
+            connection = MysqlConnection('root', 'pass', settings.DB_NAME, settings.DB_HOST, settings.DB_PORT)
         except OperationalError:
             time.sleep(3)
             continue
