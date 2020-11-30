@@ -56,7 +56,12 @@ if __name__ == '__main__':
         PRIMARY KEY (`id`),
         UNIQUE KEY `email` (`email`),
         UNIQUE KEY `ix_test_users_username` (`username`)
-    )
+    );
     """
     connection.execute_query(query)
-
+    query = f"CREATE USER '{settings.DB_USER}' IDENTIFIED BY '{settings.DB_PASS}';"
+    connection.execute_query(query)
+    query = f"GRANT ALL PRIVILEGES ON * . * to '{settings.DB_USER}';"
+    connection.execute_query(query)
+    query = "FLUSH PRIVILEGES;"
+    connection.execute_query(query)

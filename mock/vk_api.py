@@ -50,3 +50,8 @@ class VKApiHTTPMock:
     def stop(self):
         self.server.server_close()
         self.server.shutdown()
+
+
+if __name__ == '__main__':
+    vkapi = VKApiHTTPMock(settings.VKAPI_HOST, settings.VKAPI_PORT)
+    vkapi.start()

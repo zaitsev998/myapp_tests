@@ -1,0 +1,29 @@
+version: '2.1'
+
+services:
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    image: 'percona:5.7'
+    healthcheck:
+      test: ["CMD", "mysql", "-uroot", "-ppass", "-h", "127.0.0.1"]
+      timeout: 10s
+      retries: 10
+
+  prepare_db:
+    image: 'prepare_mysql:latest'
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  vk_api:
+    image: 'vk_api:latest'
+    depends_on:
+      prepare_db:
+        condition: service_started
+
+  myapp:
+    image: 'myapp:latest'
+    depends_on:
+      vk_api:
+        condition: service_started
