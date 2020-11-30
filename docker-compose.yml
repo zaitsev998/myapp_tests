@@ -21,10 +21,6 @@ services:
     depends_on:
       prepare_db:
         condition: service_started
-#    healthcheck:
-#      test: ["CMD", "ping", "vk_api"]
-#      timeout: 20s
-#      retries: 10
 
   myapp:
     image: 'myapp:latest'
@@ -36,3 +32,16 @@ services:
       vk_api:
         condition: service_started
     entrypoint: ["/app/myapp", "--config=/tmp/conf"]
+#    healthcheck:
+#      test: [ "CMD", "ping", "myapp"]
+#      timeout: 10s
+#      retries: 10
+
+  tests:
+    build: /home/artem/PycharmProjects/myapp_tests/
+    volumes:
+    - /tmp/alluredir:/alluredir
+    - /home/artem/PycharmProjects/myapp_tests:/myapp_tests
+    depends_on:
+      myapp:
+        condition: service_started

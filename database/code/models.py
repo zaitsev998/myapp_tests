@@ -9,9 +9,9 @@ class TestUser(Base):
     __table_args__ = {'mysql_charset': 'utf8'}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(VARCHAR(16), nullable=False, unique=True)
+    username = Column(VARCHAR(16), nullable=False)
     password = Column(VARCHAR(255), nullable=False)
-    email = Column(VARCHAR(64), nullable=False, unique=True)
+    email = Column(VARCHAR(64), nullable=False)
     access = Column(SMALLINT, default=null)
     active = Column(SMALLINT, default=null)
     start_active_time = Column(DATETIME, default=null)
@@ -20,7 +20,7 @@ class TestUser(Base):
     UniqueConstraint(username, name='ix_test_users_username')
 
     def __repr__(self):
-        return f"<LogRecord(" \
+        return f"<TestUser(" \
                f"id='{self.id}'," \
                f"username='{self.username}'," \
                f"password='{self.password}'," \
