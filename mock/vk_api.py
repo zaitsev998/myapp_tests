@@ -55,3 +55,5 @@ class VKApiHTTPMock:
 if __name__ == '__main__':
     vkapi = VKApiHTTPMock(settings.VKAPI_HOST, settings.VKAPI_PORT)
     vkapi.start()
+    while True:
+        pass

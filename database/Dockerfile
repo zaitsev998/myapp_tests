@@ -6,4 +6,4 @@ RUN pip3.8 install -r /db_reqs.txt
 ADD /settings.py settings.py
 ADD /prepare_db.py prepare_db.py
 
-CMD ["python3.8", "/prepare_db"]
+CMD ["python3.8", "/prepare_db.py"]

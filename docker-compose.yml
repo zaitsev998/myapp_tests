@@ -24,6 +24,11 @@ services:
 
   myapp:
     image: 'myapp:latest'
+    volumes:
+      - /home/artem/PycharmProjects/myapp_tests/conf:/tmp/conf
+    ports:
+      - 8888:8888
     depends_on:
       vk_api:
         condition: service_started
+    entrypoint: ["/app/myapp", "--config=/tmp/conf"]
