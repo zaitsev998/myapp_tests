@@ -23,7 +23,10 @@ class VKApiHandleRequests(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                response = {'vk_id': randint(100000, 10000000)}
+                if username in self.users:
+                    response = {'vk_id': self.users[username]}
+                else:
+                    response = {'vk_id': randint(100000, 10000000)}
                 self.wfile.write(json.dumps(response).encode())
             else:
                 self.send_response(404)
