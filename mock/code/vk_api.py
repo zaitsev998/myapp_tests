@@ -8,6 +8,7 @@ import settings
 
 
 class VKApiHandleRequests(BaseHTTPRequestHandler):
+    users = {}
 
     def do_GET(self):
         if self.path.startswith('/vk_id'):
@@ -27,6 +28,27 @@ class VKApiHandleRequests(BaseHTTPRequestHandler):
             else:
                 self.send_response(404)
                 self.end_headers()
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+    def do_POST(self):
+        if self.path.startswith('/vk_id'):
+            content_type = self.headers.get('Content-type', 0)
+            if content_type == 'application/json':
+                content_len = int(self.headers.get('Content-Length', 0))
+                post_body = self.rfile.read(content_len)
+                data = json.loads(post_body)
+                try:
+                    username = data["username"]
+                    vk_id = data["vk_id"]
+                except ValueError:
+                    self.send_response(400)
+                else:
+                    self.users[username] = vk_id
+                    self.send_response(200)
+                finally:
+                    self.end_headers()
         else:
             self.send_response(404)
             self.end_headers()
