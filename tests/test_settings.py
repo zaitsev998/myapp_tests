@@ -10,3 +10,8 @@ DB_NAME = 'MYSQL_DB'
 
 DB_HOST = 'mysql'
 DB_PORT = 3306
+
+SELENOID_HOST = 'selenoid'
+SELENOID_PORT = 4444
+
+VK_URL = "vk_api:5555"

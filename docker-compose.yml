@@ -1,6 +1,17 @@
 version: '2.1'
 
 services:
+
+  selenoid:
+    image: 'aerokube/selenoid:latest'
+    volumes:
+      - /var/lib/ienkins/workspace/test_job/myapp_tests/selenoid:/etc/selenoid
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    ports:
+    - 4444:4444
+    command: ["-conf", "/etc/selenoid/browsers.json", "-container-network", "myapptests_default"]
+
   mysql:
     environment:
       MYSQL_ROOT_PASSWORD: pass
@@ -25,23 +36,19 @@ services:
   myapp:
     image: 'myapp:latest'
     volumes:
-      - /home/artem/PycharmProjects/myapp_tests/conf:/tmp/conf
+      - /var/lib/ienkins/workspace/test_job/myapp_tests/conf:/tmp/conf
     ports:
       - 8888:8888
     depends_on:
       vk_api:
         condition: service_started
     entrypoint: ["/app/myapp", "--config=/tmp/conf"]
-#    healthcheck:
-#      test: [ "CMD", "ping", "myapp"]
-#      timeout: 10s
-#      retries: 10
 
   tests:
     build: /home/artem/PycharmProjects/myapp_tests/
     volumes:
     - /tmp/alluredir:/alluredir
-    - /home/artem/PycharmProjects/myapp_tests:/myapp_tests
+    - /var/lib/ienkins/workspace/test_job/myapp_tests:/myapp_tests
     depends_on:
       myapp:
         condition: service_started

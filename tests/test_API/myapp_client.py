@@ -32,10 +32,13 @@ class MyAppClient:
         response = self.session.request(method, url, headers=headers, params=params, data=data)
         return response
 
-    def create_user(self, mysql, access=1):
-        username = self.fake.first_name() + str(randint(1, 100))
-        password = self.fake.password()
-        email = self.fake.email()
+    def create_user(self, mysql, username=None, password=None, email=None, access=1):
+        if username is None:
+            username = self.fake.first_name() + str(randint(10000, 100000))
+        if password is None:
+            password = self.fake.password()
+        if email is None:
+            email = self.fake.email()
         mysql.add_user(username=username, password=password, email=email, access=access)
         return {
             'username': username,

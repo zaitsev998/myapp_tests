@@ -8,6 +8,17 @@ class TestApi:
     fake = Faker(locale='en_US')
 
     def test_add_user(self, myapp_client, mysql):
+        """
+        Проверяет добавление пользователя через api.
+        Генерируются фейковые(валидные) имя пользователя, пароль, e-mail.
+        Данные отпраляются POST запросом на /api/add_user
+        Ожидаем код ответа 201 и тело ответа User was added!
+        Пытаемся получить данные о пользователе из БД (по имени пользователя)
+        Ожидаем, что найден единственный пользователь и его данные совпадают с отправленными.
+
+        :param myapp_client: коннектор к приложению
+        :param mysql: коннектор к БД
+        """
         location = "/api/add_user"
         headers = {
             "Content-Type": "application/json"
@@ -66,6 +77,19 @@ class TestApiNegative:
         resp = myapp_client.create_user_by_api(self.fake.first_name() + str(randint(1, 100)),
                                                '', self.fake.last_name())
         assert resp.status_code == 400
+
+    def test_add_user_existing_username(self, myapp_client):
+        username = self.fake.first_name() + str(randint(1, 100))
+        myapp_client.create_user_by_api(username, self.fake.password(), self.fake.email())
+        resp = myapp_client.create_user_by_api(username, self.fake.password(), self.fake.email())
+        assert (resp.status_code, resp.text) == (304, '')
+
+    def test_add_user_existing_email(self, myapp_client):
+        email = self.fake.email()
+        myapp_client.create_user_by_api(self.fake.first_name() + str(randint(1, 100)), self.fake.password(), email)
+        resp = myapp_client.create_user_by_api(self.fake.first_name() + str(randint(1, 100)),
+                                               self.fake.password(), email)
+        assert (resp.status_code, resp.text == 304, '')
 
     def test_delete_user_negative(self, myapp_client):
         location = f"/api/del_user/{randint(1, 1000)}"

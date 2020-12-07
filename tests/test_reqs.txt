@@ -4,3 +4,6 @@ faker
 requests
 sqlalchemy
 pymysql
+selenium
+pytest-xdist
+seleniumwrapper
