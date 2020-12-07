@@ -5,7 +5,7 @@ services:
   selenoid:
     image: 'aerokube/selenoid:latest'
     volumes:
-      - /var/lib/jenkins/workspace/test_job/myapp_tests/selenoid:/etc/selenoid
+      - /var/lib/jenkins/workspace/test_job/myapp_test/selenoid:/etc/selenoid
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
     ports:
@@ -36,7 +36,7 @@ services:
   myapp:
     image: 'myapp:latest'
     volumes:
-      - /var/lib/jenkins/workspace/test_job/myapp_tests/conf:/tmp/conf
+      - /var/lib/jenkins/workspace/test_job/myapp_test/conf:/tmp/conf
     ports:
       - 8888:8888
     depends_on:
@@ -45,10 +45,10 @@ services:
     entrypoint: ["/app/myapp", "--config=/tmp/conf"]
 
   tests:
-    build: /var/lib/jenkins/workspace/test_job/myapp_tests/
+    build: /var/lib/jenkins/workspace/test_job/myapp_test/
     volumes:
     - /tmp/alluredir:/alluredir
-    - /var/lib/jenkins/workspace/test_job/myapp_tests:/myapp_tests
+    - /var/lib/jenkins/workspace/test_job/myapp_test:/myapp_tests
     depends_on:
       myapp:
         condition: service_started
