@@ -10,7 +10,7 @@ services:
       - /usr/bin/docker:/usr/bin/docker
     ports:
     - 4444:4444
-    command: ["-conf", "/etc/selenoid/browsers.json", "-container-network", "myapptests_default"]
+    command: ["-conf", "/etc/selenoid/browsers.json", "-container-network", "myapptest_default"]
 
   mysql:
     environment:
